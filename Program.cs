@@ -1,47 +1,45 @@
 ﻿using api.Data;
 using api.Repositories;
 using api.Repositories.Contracts;
+using api.Services;
+using api.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-
-var services = builder.Services;
-
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-services.AddEndpointsApiExplorer();
-services.AddSwaggerGen();
-
-// cors
-services.AddCors(options =>
 {
-    options.AddDefaultPolicy(builder => builder
-        .SetIsOriginAllowedToAllowWildcardSubdomains()
-        .WithOrigins("http://localhost:3000")
-        .AllowAnyHeader()
-        .AllowAnyMethod()
-        .AllowCredentials()
-        .Build());
-});
+    var services = builder.Services;
 
-// ioc
-services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase(databaseName: "Test"));
-services.AddAutoMapper(typeof(Program));
-services.AddScoped<IClientRepository, ClientRepository>();
-services.AddScoped<IEmailRepository, EmailRepository>();
-services.AddScoped<IDocumentRepository, DocumentRepository>();
+    services.AddControllers();
+    services.AddEndpointsApiExplorer();
+    services.AddSwaggerGen();
 
-var app = builder.Build();
+    services.AddCors(options =>
+    {
+        options.AddDefaultPolicy(builder => builder
+            .SetIsOriginAllowedToAllowWildcardSubdomains()
+            .WithOrigins("http://localhost:3000")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials()
+            .Build());
+    });
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase(databaseName: "Test"));
+    services.AddAutoMapper(typeof(Program));
+    services.AddScoped<IRepositoryManager, RepositoryManager>();
+    services.AddScoped<IServiceManager, ServiceManager>();
 }
 
-app.UseCors();
 
-// run app
-app.Run();
+var app = builder.Build();
+{
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseDeveloperExceptionPage();
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+    app.UseCors();
+    app.MapControllers();
+    app.Run();
+}

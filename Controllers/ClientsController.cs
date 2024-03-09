@@ -23,7 +23,7 @@ public class ClientsController : Controller
     }
     
     [HttpGet("{id}")]
-    public async Task<IActionResult> Get(long id)
+    public async Task<IActionResult> Get(Guid id)
     {
         try
         {
@@ -49,7 +49,7 @@ public class ClientsController : Controller
     }
     
     [HttpPut("{id}")] 
-    public async Task<IActionResult> Put(long id, [FromBody] ClientWriteDto serviceWriteDto)
+    public async Task<IActionResult> Put(Guid id, [FromBody] ClientWriteDto serviceWriteDto)
     {
         try
         {
