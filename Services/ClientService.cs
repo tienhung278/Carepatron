@@ -48,8 +48,8 @@ public class ClientService : IClientService
         var client = _mapper.Map<Client>(clientWriteDto);
         client.Id = new Guid();
         await _clientRepository.CreateAsync(client);
-        /*await _emailRepository.Send(client.Email, "Hi there - welcome to my Carepatron portal.");
-        await _documentRepository.SyncDocumentsFromExternalSource(client.Email);*/
+        await _emailRepository.Send(client.Email, "Hi there - welcome to my Carepatron portal.");
+        await _documentRepository.SyncDocumentsFromExternalSource(client.Email);
         await _unitOfWork.SaveChangesAsync();
         return client.Id;
     }
@@ -62,8 +62,8 @@ public class ClientService : IClientService
 
         if (client.Email != clientWriteDto.Email)
         {
-            /*await _emailRepository.Send(client.Email, "Hi there - welcome to my Carepatron portal.");
-            await _documentRepository.SyncDocumentsFromExternalSource(client.Email);*/
+            await _emailRepository.Send(client.Email, "Hi there - welcome to my Carepatron portal.");
+            await _documentRepository.SyncDocumentsFromExternalSource(client.Email);
         }
         client.FirstName = clientWriteDto.FirstName;
         client.LastName = clientWriteDto.LastName;
