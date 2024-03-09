@@ -26,7 +26,7 @@ services.AddCors(options =>
 
 // ioc
 services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase(databaseName: "Test"));
-
+services.AddAutoMapper(typeof(Program));
 services.AddScoped<IClientRepository, ClientRepository>();
 services.AddScoped<IEmailRepository, EmailRepository>();
 services.AddScoped<IDocumentRepository, DocumentRepository>();
