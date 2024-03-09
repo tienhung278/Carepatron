@@ -22,18 +22,11 @@ public class ClientsController : Controller
         return Ok(services);
     }
     
-    [HttpGet("{id}")]
-    public async Task<IActionResult> Get(Guid id)
+    [HttpGet("{name}")]
+    public async Task<IActionResult> Get(string name)
     {
-        try
-        {
-            var service = await _clientService.FindClientAsync(id);
-            return Ok(service);
-        }
-        catch (NullReferenceException exception)
-        {
-            return NotFound(new { message = $"{id} was not found" });
-        }
+        var services = await _clientService.FindClientByNameAsync(name);
+        return Ok(services);
     }
     
     [HttpPost]

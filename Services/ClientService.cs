@@ -28,6 +28,14 @@ public class ClientService : IClientService
         var clients = await _clientRepository.FindAllAsync();
         return _mapper.Map<IReadOnlyList<ClientReadDto>>(clients);
     }
+    
+    public async Task<IReadOnlyList<ClientReadDto>> FindClientByNameAsync(string name)
+    {
+        var clients = await _clientRepository.FindAsync(c =>
+            c.FirstName.Contains(name, StringComparison.OrdinalIgnoreCase) ||
+            c.LastName.Contains(name, StringComparison.OrdinalIgnoreCase));
+        return _mapper.Map<IReadOnlyList<ClientReadDto>>(clients);
+    }
 
     public async Task<ClientReadDto> FindClientAsync(Guid id)
     {
@@ -40,8 +48,8 @@ public class ClientService : IClientService
         var client = _mapper.Map<Client>(clientWriteDto);
         client.Id = new Guid();
         await _clientRepository.CreateAsync(client);
-        await _emailRepository.Send(client.Email, "Hi there - welcome to my Carepatron portal.");
-        await _documentRepository.SyncDocumentsFromExternalSource(client.Email);
+        /*await _emailRepository.Send(client.Email, "Hi there - welcome to my Carepatron portal.");
+        await _documentRepository.SyncDocumentsFromExternalSource(client.Email);*/
         await _unitOfWork.SaveChangesAsync();
         return client.Id;
     }
@@ -54,8 +62,8 @@ public class ClientService : IClientService
 
         if (client.Email != clientWriteDto.Email)
         {
-            await _emailRepository.Send(client.Email, "Hi there - welcome to my Carepatron portal.");
-            await _documentRepository.SyncDocumentsFromExternalSource(client.Email);
+            /*await _emailRepository.Send(client.Email, "Hi there - welcome to my Carepatron portal.");
+            await _documentRepository.SyncDocumentsFromExternalSource(client.Email);*/
         }
         client.FirstName = clientWriteDto.FirstName;
         client.LastName = clientWriteDto.LastName;
