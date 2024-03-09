@@ -27,7 +27,6 @@ services.AddCors(options =>
 // ioc
 services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase(databaseName: "Test"));
 
-services.AddScoped<DataSeeder>();
 services.AddScoped<IClientRepository, ClientRepository>();
 services.AddScoped<IEmailRepository, EmailRepository>();
 services.AddScoped<IDocumentRepository, DocumentRepository>();
@@ -43,14 +42,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors();
-
-// seed data
-using (var scope = app.Services.CreateScope())
-{
-    var dataSeeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
-
-    dataSeeder.Seed();
-}
 
 // run app
 app.Run();
