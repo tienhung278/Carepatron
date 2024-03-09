@@ -1,4 +1,5 @@
 ﻿using api.Data;
+using api.Middlewares;
 using api.Repositories;
 using api.Repositories.Contracts;
 using api.Services;
@@ -30,7 +31,6 @@ var builder = WebApplication.CreateBuilder(args);
     services.AddScoped<IServiceManager, ServiceManager>();
 }
 
-
 var app = builder.Build();
 {
     if (app.Environment.IsDevelopment())
@@ -40,6 +40,7 @@ var app = builder.Build();
         app.UseSwaggerUI();
     }
     app.UseCors();
+    app.UseCustomExceptionMiddleware();
     app.MapControllers();
     app.Run();
 }
