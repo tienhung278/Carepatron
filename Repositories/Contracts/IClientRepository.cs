@@ -2,9 +2,6 @@
 
 namespace api.Repositories.Contracts;
 
-public interface IClientRepository
+public interface IClientRepository : IRepositoryBase<Client>
 {
-    Task<Client[]> Get();
-    Task Create(Client client);
-    Task Update(Client client);
 }

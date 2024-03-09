@@ -8,6 +8,13 @@ namespace api.Repositories
 {
     public class EmailRepository : IEmailRepository
     {
+        private readonly DataContext _dataContext;
+
+        public EmailRepository(DataContext dataContext)
+        {
+            _dataContext = dataContext;
+        }
+        
         public async Task Send(string _, string __)
         {
             // simulates random errors that occur with external services
